@@ -1,0 +1,159 @@
+/*
+ * Catppuccin Mocha Palette (Full)
+ * Colors defined using CSS @define-color
+ */
+@define-color rosewater #f5e0dc;
+@define-color flamingo #f2cdcd;
+@define-color pink #f5c2e7;
+@define-color mauve #cba6f7;
+@define-color red #f38ba8;
+@define-color maroon #eba0ac;
+@define-color peach #fab387;
+@define-color yellow #f9e2af;
+@define-color green #a6e3a1;
+@define-color teal #94e2d5;
+@define-color sky #89dceb;
+@define-color sapphire #74c7ec;
+@define-color blue #89b4fa;
+@define-color lavender #b4befe;
+@define-color text #cdd6f4;
+@define-color subtext1 #bac2de;
+@define-color subtext0 #a6adc8;
+@define-color overlay2 #9399b2;
+@define-color overlay1 #7f849c;
+@define-color overlay0 #6c7086;
+@define-color surface2 #585b70;
+@define-color surface1 #45475a;
+@define-color surface0 #313244;
+@define-color base #1e1e2e;
+@define-color mantle #181825;
+@define-color crust #11111b;
+
+/* Global Styles */
+* {
+    font-family: 'JetBrains Mono Nerd Font', 'Ubuntu Nerd Font', monospace;
+    font-size: 14px;
+    transition: 100ms ease-in-out;
+    border: none;
+    box-shadow: none;
+}
+
+/* ---------------------------------- */
+/* Control Center Styling */
+/* ---------------------------------- */
+
+.control-center {
+    border-radius: 20px; /* Large, pretty rounded corners */
+    background-color: rgba(36, 39, 58, 0.8); /* Use a floating/transparent style */
+    color: @text;
+    padding: 18px;
+    margin: 10px;
+}
+
+/* Control Center Background - Apply transparency here */
+.control-center-slide {
+    background-color: alpha(@mantle, 0.95); /* Semi-transparent mantle */
+    border-radius: 20px;
+    border: 2px solid @surface1;
+}
+
+/* Title and Clear All Button */
+.control-center .widget-title > label {
+    color: @blue;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.control-center .control-center-clear-all {
+    border-radius: 10px;
+    color: @text;
+    background-color: @surface0;
+    padding: 6px 12px;
+}
+
+.control-center .control-center-clear-all:hover {
+    background-color: @surface1;
+}
+
+/* ---------------------------------- */
+/* Notification Styling (Floating & Control Center) */
+/* ---------------------------------- */
+
+/* Default Notification Container */
+.notification-row .notification-background {
+    border-radius: 12px;
+    margin: 8px 10px;
+    background-color: @base; /* Base for contrast */
+    color: @text;
+    border: 1px solid @surface0;
+    padding: 0; /* Remove default padding inside container */
+}
+
+/* Notification body (the visible card) */
+.notification {
+    padding: 10px;
+}
+
+/* Urgency-based Styling - Color-coded borders */
+.notification-row .notification-background.critical {
+    border: 2px solid @red;
+    background-color: @base;
+}
+
+.notification-row .notification-background.low {
+    border: 1px solid @surface2; /* Subtle low urgency */
+}
+
+/* Text elements */
+.notification .summary {
+    color: @text;
+    font-weight: bold;
+}
+
+.notification .body {
+    color: @subtext0;
+}
+
+.notification .time {
+    color: @subtext1;
+}
+
+/* Close Button (using a bright accent) */
+.notification-background .close-button {
+    margin: 6px;
+    padding: 2px;
+    border-radius: 8px;
+    color: @crust; /* Darkest color for button text */
+    background-color: @red;
+}
+
+.notification-background .close-button:hover {
+    background-color: @maroon;
+}
+
+/* Media Player (MPRIS) Widget Styling */
+.widget-mpris {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 12px;
+    background-color: @surface0;
+}
+
+.widget-mpris button {
+    border-radius: 8px;
+    background-color: @surface1;
+    color: @text;
+}
+
+.widget-mpris button:hover {
+    background-color: @surface2;
+}
+
+.widget-mpris-title {
+    color: @blue;
+    font-weight: bold;
+}
+
+.widget-mpris-subtitle {
+    color: @subtext0;
+}

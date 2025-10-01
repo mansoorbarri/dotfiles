@@ -1,0 +1,9 @@
+font-family = "Geist Mono"
+window-decoration = false
+background-opacity = 0.80
+background=#1a1c1c
+window-width = 250
+window-height = 80
+keybind=ctrl+shift+w=close_window
+confirm-close-surface=false
+command=/home/anar/Music/anar/scripts/ghostty-tmux.sh
