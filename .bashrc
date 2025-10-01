@@ -136,11 +136,12 @@ sudo() {
   fi
 }
 
+if [ "$(tty)" = "/dev/tty1" ]; then
+  exec Hyprland
+fi
+
 #starshell
 eval "$(starship init bash)"
-
-#autojump
-. /usr/share/autojump/autojump.sh
 
 export PATH=$PATH:/usr/local/go/bin
 
@@ -152,4 +153,8 @@ alias pserver="python3 -m http.server 8080"
 alias mdrive="rclone mount --daemon gdrive:/ ~/drive"
 alias nano="micro"
 alias ll="ls -l"
-alias tt="gsettings set org.gnome.desktop.peripherals.touchpad send-events \$(if [ \$(gsettings get org.gnome.desktop.peripherals.touchpad send-events) = \"'enabled'\" ]; then echo \"'disabled'\"; else echo \"'enabled'\"; fi)"
+alias fda="python3 ~/Music/anar/gh/PythonScripts/apprenticeship_scrapper.py"
+alias faa="python3 ~/Music/anar/gh/PythonScripts/pda.py"
+alias fjob="python3 ~/Music/anar/gh/PythonScripts/jobs.py"
+alias fall="fda && faa && fjob"
+alias copy='xclip -selection clipboard'
