@@ -157,4 +157,4 @@ alias fda="python3 ~/Music/anar/gh/PythonScripts/apprenticeship_scrapper.py"
 alias faa="python3 ~/Music/anar/gh/PythonScripts/pda.py"
 alias fjob="python3 ~/Music/anar/gh/PythonScripts/jobs.py"
 alias fall="fda && faa && fjob"
-alias copy='xclip -selection clipboard'
+alias copy='copyq copy -'
