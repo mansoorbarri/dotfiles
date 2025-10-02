@@ -5,7 +5,7 @@ WALLPAPER_DIR="$HOME/.wally"
 # The monitor name(s) to set the wallpaper on.
 # Use 'hyprctl monitors' in your terminal to find the exact name (e.g., eDP-1, DP-1).
 # If you leave it as a comma-separated blank, it will apply to all monitors without a specific wallpaper.
-MONITOR_NAME=""
+MONITOR_NAME="eDP-1"
 
 # --- Script Logic ---
 
