@@ -13,7 +13,7 @@
         "hyprland/window"
     ],
     "modules-right": [
-        "idle_inhibitor"
+        "idle_inhibitor",
         "pulseaudio",
         // "network",
         "battery",
@@ -94,7 +94,7 @@
         // }
     },
     "clock": {
-        // "timezone": "America/New_York",
+        "timezone": "UK/London",
         "format": "{:%H:%M | %d-%m}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%Y-%m-%d}"
