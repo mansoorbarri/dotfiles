@@ -1,0 +1,11 @@
+app.zen_browser.zen
+com.discordapp.Discord
+com.getpostman.Postman
+com.naps2.Naps2
+com.obsproject.Studio
+com.rustdesk.RustDesk
+com.tradingview.tradingview
+org.gnome.Snapshot
+org.localsend.localsend_app
+org.onlyoffice.desktopeditors
+org.vinegarhq.Sober

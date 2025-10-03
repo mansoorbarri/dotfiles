@@ -1,0 +1,16 @@
+activitywatch-bin
+auto-cpufreq
+autojump
+barrier
+catppuccin-gtk-theme-mocha
+ccrypt
+emote
+github-desktop-bin
+google-chrome
+legcord-git
+rate-mirrors-bin
+sublime-text-4
+ulauncher
+visual-studio-code-bin
+yay-bin
+youtube-music-bin
