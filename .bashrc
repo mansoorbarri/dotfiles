@@ -158,3 +158,4 @@ alias faa="python3 ~/Music/anar/gh/PythonScripts/pda.py"
 alias fjob="python3 ~/Music/anar/gh/PythonScripts/jobs.py"
 alias fall="fda && faa && fjob"
 alias copy='copyq copy -'
+alias cwally="/home/anar/.config/hypr/scripts/run_hyprpaper.sh"
