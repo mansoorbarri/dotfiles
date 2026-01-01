@@ -137,7 +137,7 @@ sudo() {
 }
 
 if [ "$(tty)" = "/dev/tty1" ]; then
-  exec Hyprland
+  exec sway
 fi
 
 #starshell
@@ -155,7 +155,7 @@ alias nano="micro"
 alias ll="ls -l"
 alias faa="python3 ~/Music/anar/gh/PythonScripts/pda.py"
 alias fjob="python3 ~/Music/anar/gh/PythonScripts/jobs.py"
-alias faa="faa && fjob"
+alias fall="faa && fjob"
 alias copy='wl-copy'
 alias cwally="/home/anar/.config/hypr/scripts/run_hyprpaper.sh"
 alias hpssh="ssh -p 2022 hp@192.168.0.168"
