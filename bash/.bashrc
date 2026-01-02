@@ -136,10 +136,6 @@ sudo() {
   fi
 }
 
-if [ "$(tty)" = "/dev/tty1" ]; then
-  exec sway
-fi
-
 #starshell
 eval "$(starship init bash)"
 
