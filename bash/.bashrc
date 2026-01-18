@@ -139,6 +139,9 @@ sudo() {
 #starshell
 eval "$(starship init bash)"
 
+# zoxide (autojump replacement)
+eval "$(zoxide init bash --cmd j)"
+
 export PATH=$PATH:/usr/local/go/bin
 
 alias ipv="curl ifconfig.me"
@@ -164,3 +167,6 @@ case ":$PATH:" in
 *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# export ANTHROPIC_API_KEY="your-api-key-here"
+texconvert() { tectonic "$1" && base="${1%.tex}" && rm -f "$base.aux" "$base.out" "$base.log"; }
