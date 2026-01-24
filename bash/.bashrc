@@ -159,6 +159,8 @@ alias copy='wl-copy'
 alias cwally="/home/anar/.config/hypr/scripts/run_hyprpaper.sh"
 alias hpssh="ssh -p 2022 hp@192.168.0.168"
 alias ff="fastfetch"
+alias zed="zeditor"
+alias c="zeditor"
 
 # pnpm
 export PNPM_HOME="/home/anar/.local/share/pnpm"
@@ -170,3 +172,4 @@ esac
 
 # export ANTHROPIC_API_KEY="your-api-key-here"
 texconvert() { tectonic "$1" && base="${1%.tex}" && rm -f "$base.aux" "$base.out" "$base.log"; }
+export PATH="$HOME/.local/bin:$PATH"
