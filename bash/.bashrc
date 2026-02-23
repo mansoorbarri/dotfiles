@@ -117,7 +117,7 @@ gcom() {
   git add .
   git commit -S -m "$1"
 }
-lazyg() {
+yeet() {
   git add .
   git commit -S -m "$1"
   git push
