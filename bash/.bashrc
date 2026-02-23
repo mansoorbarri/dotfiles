@@ -162,6 +162,8 @@ alias ff="fastfetch"
 alias zed="zeditor"
 alias c="zeditor"
 alias cc="claude --dangerously-skip-permissions"
+alias cdx="codex --dangerously-bypass-approvals-and-sandbox"
+
 # pnpm
 export PNPM_HOME="/home/anar/.local/share/pnpm"
 case ":$PATH:" in

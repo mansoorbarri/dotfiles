@@ -1,0 +1,86 @@
+#!/bin/bash
+# ATC Radio Mic Toggle
+# Usage: atc-radio [on|off|toggle|status]
+
+PID_FILE="/tmp/atc-radio.pid"
+NOISE_PID_FILE="/tmp/atc-radio-noise.pid"
+CONF="$HOME/.config/pipewire/atc-radio.conf"
+STATIC_WAV="$HOME/.config/pipewire/radio-static.wav"
+MIXER_SINK="atc_radio_mixer"
+
+is_running() {
+    [[ -f "$PID_FILE" ]] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null
+}
+
+start_radio() {
+    if is_running; then
+        echo "ATC radio mic is already ON"
+        return 0
+    fi
+
+    # Create a mixer sink — mic + noise both feed into this
+    pactl load-module module-null-sink \
+        sink_name="$MIXER_SINK" \
+        sink_properties=device.description=ATC_Mixer \
+        rate=48000 channels=2 >/dev/null 2>&1
+
+    sleep 0.3
+
+    # Link real mic to the mixer sink
+    pw-link alsa_input.pci-0000_00_1f.3.analog-stereo:capture_FL "$MIXER_SINK:playback_FL" 2>/dev/null
+    pw-link alsa_input.pci-0000_00_1f.3.analog-stereo:capture_FR "$MIXER_SINK:playback_FR" 2>/dev/null
+
+    # Play looping radio static into the mixer sink (not to speakers)
+    if [[ -f "$STATIC_WAV" ]]; then
+        ffmpeg -hide_banner -loglevel quiet \
+            -stream_loop -1 -re -i "$STATIC_WAV" \
+            -f pulse -device "$MIXER_SINK" "ATC Static" &>/dev/null &
+        echo $! > "$NOISE_PID_FILE"
+    fi
+
+    sleep 0.3
+
+    # Start the filter chain (captures from mixer monitor → radio effect → virtual source)
+    pipewire -c "$CONF" &
+    echo $! > "$PID_FILE"
+    sleep 0.5
+
+    if is_running; then
+        echo "ATC radio mic ON — select 'ATC Radio Mic' in Discord"
+    else
+        rm -f "$PID_FILE"
+        echo "ERROR: failed to start" >&2
+        return 1
+    fi
+}
+
+stop_radio() {
+    if ! is_running; then
+        echo "ATC radio mic is already OFF"
+        return 0
+    fi
+
+    kill "$(cat "$PID_FILE")" 2>/dev/null
+    rm -f "$PID_FILE"
+
+    # Stop noise
+    if [[ -f "$NOISE_PID_FILE" ]]; then
+        kill "$(cat "$NOISE_PID_FILE")" 2>/dev/null
+        rm -f "$NOISE_PID_FILE"
+    fi
+
+    # Remove mixer sink
+    pactl list short modules 2>/dev/null | grep "$MIXER_SINK" | awk '{print $1}' | while read -r mod; do
+        pactl unload-module "$mod" 2>/dev/null
+    done
+
+    echo "ATC radio mic OFF"
+}
+
+case "${1:-toggle}" in
+    on)     start_radio ;;
+    off)    stop_radio ;;
+    toggle) if is_running; then stop_radio; else start_radio; fi ;;
+    status) if is_running; then echo "ATC radio mic: ON (pid $(cat "$PID_FILE"))"; else echo "ATC radio mic: OFF"; fi ;;
+    *)      echo "Usage: atc-radio [on|off|toggle|status]"; exit 1 ;;
+esac

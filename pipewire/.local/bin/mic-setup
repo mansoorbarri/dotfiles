@@ -1,0 +1,16 @@
+#!/bin/bash
+# Set default mic levels for Built-in Audio
+# Run on boot or after audio reset
+
+sleep 2
+
+# Capture switch on
+amixer -c 0 set 'Capture' cap >/dev/null 2>&1
+# Capture volume max (PipeWire controls final gain)
+amixer -c 0 set 'Capture' 63 >/dev/null 2>&1
+# Mic Boost at +10dB (not +30dB — less noise)
+amixer -c 0 set 'Mic Boost' 1 >/dev/null 2>&1
+# Digital capture at +5dB
+amixer -c 0 cset numid=40 70,70 >/dev/null 2>&1
+# PipeWire source volume 100%
+wpctl set-volume @DEFAULT_SOURCE@ 1.0 2>/dev/null
