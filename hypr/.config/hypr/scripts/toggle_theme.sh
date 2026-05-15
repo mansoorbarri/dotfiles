@@ -3,4 +3,4 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-exec "$SCRIPT_DIR/theme-mode.sh" dark
+exec "$SCRIPT_DIR/theme-mode.sh" toggle
