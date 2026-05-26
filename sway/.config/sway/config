@@ -148,7 +148,7 @@ assign [app_id="com.mitchellh.ghostty"] workspace number 2
 
 assign [app_id="code"] workspace number 3
 
-assign [app_id="legcord"] workspace number 4
+assign [app_id="discord"] workspace number 4
 
 # Ignore broken ghost windows
 for_window [class="^$"] focus disable
@@ -173,7 +173,7 @@ exec_always ~/.config/sway/scripts/swayidle-lock.sh
 
 exec_always nm-applet
 
-exec_always legcord
+exec_always discord
 # =====================================================
 # INCLUDES
 # =====================================================
