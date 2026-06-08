@@ -67,61 +67,24 @@ set_force_dark_flag() {
 write_gtk_settings() {
   local theme="$1"
   local prefer_dark="$2"
-  local prefer_dark_int="0"
-
-  if [[ "$prefer_dark" == "true" ]]; then
-    prefer_dark_int="1"
-  fi
 
   mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
   for settings_file in "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"; do
     cat >"$settings_file" <<EOF
 [Settings]
 gtk-application-prefer-dark-theme=$prefer_dark
-gtk-enable-primary-paste=true
 gtk-theme-name=$theme
 EOF
   done
 
   cat >"$HOME/.gtkrc-2.0.mine" <<EOF
 gtk-theme-name="$theme"
-gtk-application-prefer-dark-theme=$prefer_dark_int
+gtk-application-prefer-dark-theme=$([[ "$prefer_dark" == "true" ]] && printf '1' || printf '0')
 EOF
 
   if [[ -f "$HOME/.gtkrc-2.0" ]]; then
     sed -i 's|^gtk-theme-name=.*|gtk-theme-name="'"$theme"'"|' "$HOME/.gtkrc-2.0"
   fi
-}
-
-write_portal_settings() {
-  local mode="$1"
-  local color_scheme="$2"
-  local portal_color_scheme="2"
-
-  if [[ "$mode" == "dark" ]]; then
-    portal_color_scheme="1"
-  fi
-
-  mkdir -p "$HOME/.config/xdg-desktop-portal" "$HOME/.config/xdg-desktop-portal/portals.conf.d"
-
-  cat >"$HOME/.config/xdg-desktop-portal/settings" <<EOF
-[org.freedesktop.appearance]
-color-scheme=$portal_color_scheme
-EOF
-
-  cat >"$HOME/.config/xdg-desktop-portal/portals.conf" <<'EOF'
-[preferred]
-default=hyprland;gtk
-org.freedesktop.impl.portal.Settings=gtk
-EOF
-
-  cat >"$HOME/.config/xdg-desktop-portal/portals.conf.d/hyprland.conf" <<'EOF'
-[preferred]
-default=hyprland;gtk
-org.freedesktop.impl.portal.Settings=gtk
-EOF
-
-  set_or_append_line "$HOME/.config/xsettingsd/xsettingsd.conf" '^Net/ColorScheme ' "Net/ColorScheme \"$color_scheme\""
 }
 
 write_xsettings() {
@@ -142,12 +105,10 @@ write_qt_settings() {
 
   if [[ -f "$HOME/.config/qt5ct/qt5ct.conf" ]]; then
     sed -i 's|^color_scheme_path=.*|color_scheme_path='"$qt5_scheme"'|' "$HOME/.config/qt5ct/qt5ct.conf"
-    sed -i 's|^custom_palette=.*|custom_palette=false|' "$HOME/.config/qt5ct/qt5ct.conf"
   fi
 
   if [[ -f "$HOME/.config/qt6ct/qt6ct.conf" ]]; then
     sed -i 's|^color_scheme_path=.*|color_scheme_path='"$qt6_scheme"'|' "$HOME/.config/qt6ct/qt6ct.conf"
-    sed -i 's|^custom_palette=.*|custom_palette=false|' "$HOME/.config/qt6ct/qt6ct.conf"
   fi
 
   if command -v kwriteconfig6 >/dev/null 2>&1; then
@@ -158,20 +119,6 @@ write_qt_settings() {
       kwriteconfig6 --file "$HOME/.config/kdeglobals" --group General --key ColorScheme BreezeDark
       kwriteconfig6 --file "$HOME/.config/kdeglobals" --group KDE --key LookAndFeelPackage org.kde.breezedark.desktop
     fi
-  fi
-}
-
-write_systemd_gtk_theme() {
-  local mode="$1"
-
-  if ! command -v systemctl >/dev/null 2>&1; then
-    return
-  fi
-
-  if [[ "$mode" == "dark" ]]; then
-    systemctl --user set-environment GTK_THEME=Adwaita:dark >/dev/null 2>&1 || true
-  else
-    systemctl --user unset-environment GTK_THEME >/dev/null 2>&1 || true
   fi
 }
 
@@ -268,20 +215,12 @@ write_electron_flags() {
   fi
 
   for file in \
-    "$HOME/.config/brave-flags.conf" \
-    "$HOME/.config/chrome-flags.conf" \
-    "$HOME/.config/chromium-flags.conf" \
-    "$HOME/.config/code-flags.conf" \
     "$HOME/.config/discord-flags.conf" \
     "$HOME/.config/electron-flags.conf" \
     "$HOME/.config/electron39-flags.conf" \
-    "$HOME/.config/edge-flags.conf" \
     "$HOME/.config/helium-browser-flags.conf" \
     "$HOME/.config/legcord-flags.conf" \
-    "$HOME/.config/microsoft-edge-flags.conf" \
-    "$HOME/.config/notion-flags.conf" \
-    "$HOME/.config/vesktop-flags.conf" \
-    "$HOME/.config/vscodium-flags.conf"
+    "$HOME/.config/notion-flags.conf"
   do
     set_force_dark_flag "$file" "$enable_dark"
   done
@@ -312,6 +251,7 @@ reload_live_components() {
     nohup swaync >/dev/null 2>&1 &
   fi
 
+  systemctl --user unset-environment GTK_THEME >/dev/null 2>&1 || true
 }
 
 reload_portals() {
@@ -352,7 +292,6 @@ apply_mode() {
   gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
 
   write_gtk_settings "$gtk_theme" "$prefer_dark"
-  write_portal_settings "$mode" "$color_scheme"
   write_xsettings "$gtk_theme"
   write_qt_settings "$qt5_scheme" "$qt6_scheme"
   write_hypr_theme_files "$mode"
@@ -364,7 +303,6 @@ apply_mode() {
   write_starship_theme "$mode"
   reset_helium_theme_prefs_if_stopped
   write_electron_flags "$mode"
-  write_systemd_gtk_theme "$mode"
   reload_live_components "$gtk_theme"
   reload_portals
 
