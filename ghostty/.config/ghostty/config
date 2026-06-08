@@ -5,4 +5,4 @@ window-padding-x = 2
 window-padding-y = 2
 confirm-close-surface=false
 command=/home/anar/code/bash-scripts/ghostty-tmux.sh
-theme = Catppuccin Mocha
+theme = Catppuccin Latte
