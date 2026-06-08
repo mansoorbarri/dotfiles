@@ -301,7 +301,11 @@ reload_live_components() {
   if pgrep -x waybar >/dev/null 2>&1; then
     pkill -x waybar || true
   fi
-  nohup waybar -c "$WAYBAR_DIR/config" -s "$WAYBAR_DIR/style.css" >/dev/null 2>&1 &
+  if [[ "$gtk_theme" == "$DARK_GTK_THEME" ]]; then
+    nohup env GTK_THEME=Adwaita:dark waybar -c "$WAYBAR_DIR/config" -s "$WAYBAR_DIR/style.css" >/dev/null 2>&1 &
+  else
+    nohup env -u GTK_THEME waybar -c "$WAYBAR_DIR/config" -s "$WAYBAR_DIR/style.css" >/dev/null 2>&1 &
+  fi
 
   if pgrep -x mako >/dev/null 2>&1 && command -v makoctl >/dev/null 2>&1; then
     makoctl reload >/dev/null 2>&1 || true

@@ -126,3 +126,19 @@ button:hover {
     padding-left: 6px;
     padding-right: 6px;
 }
+
+menu {
+    background-color: @base;
+    color: @text;
+    border: 1px solid @surface1;
+}
+
+menuitem {
+    background-color: transparent;
+    color: @text;
+}
+
+menuitem:hover {
+    background-color: @surface0;
+    color: @mauve;
+}

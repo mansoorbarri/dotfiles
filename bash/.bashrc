@@ -179,3 +179,9 @@ esac
 texconvert() { tectonic "$1" && base="${1%.tex}" && rm -f "$base.aux" "$base.out" "$base.log"; }
 export PATH="$HOME/.local/bin:$PATH"
 . "$HOME/.cargo/env"
+
+# Android development
+export JAVA_HOME="$HOME/.local/share/jdks/jdk-17.0.19+10"
+export ANDROID_HOME="$HOME/Android/Sdk"
+export ANDROID_SDK_ROOT="$ANDROID_HOME"
+export PATH="$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
