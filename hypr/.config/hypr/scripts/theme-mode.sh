@@ -245,19 +245,29 @@ write_starship_theme() {
 
 reset_helium_theme_prefs_if_stopped() {
   local pref_file="$HOME/.config/net.imput.helium/Default/Preferences"
+  local local_state_file="$HOME/.config/net.imput.helium/Local State"
   local tmp_file
 
   [[ -f "$pref_file" ]] || return
-  if pgrep -x helium >/dev/null 2>&1; then
+  if pgrep -af '[/](helium|helium-browser)( |$)' >/dev/null 2>&1; then
     return
   fi
 
   tmp_file="$(mktemp)"
   jq '
-    del(.browser.theme.color_scheme2)
-    | del(.browser.theme.follows_system_colors)
+    .browser.theme = {"color_scheme2": 0, "follows_system_colors": true}
     | del(.extensions.theme)
   ' "$pref_file" >"$tmp_file" && mv "$tmp_file" "$pref_file"
+
+  if [[ -f "$local_state_file" ]]; then
+    tmp_file="$(mktemp)"
+    jq '
+      del(.profile.info_cache.Default.profile_color_seed)
+      | del(.profile.info_cache.Default.profile_highlight_color)
+      | del(.profile.info_cache.Default.default_avatar_fill_color)
+      | del(.profile.info_cache.Default.default_avatar_stroke_color)
+    ' "$local_state_file" >"$tmp_file" && mv "$tmp_file" "$local_state_file"
+  fi
 }
 
 write_electron_flags() {
