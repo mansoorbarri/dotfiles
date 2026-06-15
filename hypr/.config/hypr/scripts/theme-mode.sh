@@ -270,6 +270,30 @@ reset_helium_theme_prefs_if_stopped() {
   fi
 }
 
+write_helium_flags() {
+  local file="$HOME/.config/helium-browser-flags.conf"
+
+  mkdir -p "$(dirname "$file")"
+  touch "$file"
+
+  for flag in \
+    '--disable-background-timer-throttling' \
+    '--disable-backgrounding-occluded-windows' \
+    '--disable-renderer-backgrounding' \
+    '--gtk-version=4' \
+    '--xdg-portal-required-version=1' \
+    '--disable-vulkan'
+  do
+    if ! grep -qxF -- "$flag" "$file"; then
+      printf '%s\n' "$flag" >>"$file"
+    fi
+  done
+
+  sed -i '/^--disable-features=CalculateNativeWinOcclusion,IntensiveWakeUpThrottling,PageLifecycleTransitions,TabFreeze,ThrottleDisplayNoneAndVisibilityHiddenCrossOriginIframes$/d' "$file"
+  set_or_append_line "$file" '^--ozone-platform=' '--ozone-platform=x11'
+  set_force_dark_flag "$file" false
+}
+
 write_electron_flags() {
   local mode="$1"
   local enable_dark="false"
@@ -286,7 +310,6 @@ write_electron_flags() {
     "$HOME/.config/electron-flags.conf" \
     "$HOME/.config/electron39-flags.conf" \
     "$HOME/.config/edge-flags.conf" \
-    "$HOME/.config/helium-browser-flags.conf" \
     "$HOME/.config/legcord-flags.conf" \
     "$HOME/.config/microsoft-edge-flags.conf" \
     "$HOME/.config/notion-flags.conf" \
@@ -295,6 +318,8 @@ write_electron_flags() {
   do
     set_force_dark_flag "$file" "$enable_dark"
   done
+
+  write_helium_flags
 }
 
 reload_live_components() {
